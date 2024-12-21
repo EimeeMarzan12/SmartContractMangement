@@ -27,7 +27,7 @@
 - **Returns**: The current count (uint).
 
 ### 4. `incrementCount()`
-- **Purpose**: Increments the current counter by `1` and emits an event with the new count.
+- **Purpose**: Increments the current counter by `10` and emits an event with the new count.
 - **Visibility**: `external` (can be called by external addresses).
   
 ## Events
