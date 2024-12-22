@@ -1,76 +1,74 @@
 # SmartContractManagement
 
-`SmartContractManagement` is a simple Solidity smart contract that allows you to store a contract name and increment a counter. The contract is initialized with a name and starts with a counter set to `0`. The counter can be incremented via an external function, and the contract provides getter functions to retrieve the contract name and the current count.
 
-## Features
 
-- **Store contract name**: The contract name is set during deployment and can be retrieved through a getter function.
-- **Increment a counter**: The contract allows users to increment a counter value using the `incrementCount` function.
-- **Event logging**: When the count is incremented, an event is emitted to log the new count value.
-- **Getter functions**: The contract provides external getter functions to retrieve the contract name and the current count.
+# Assessment Smart Contract
 
-## Contract Functions
+## **Overview**
+The `Assessment` smart contract securely manages ETH deposits and withdrawals, with the ability to freeze operations. Only the contract owner can perform restricted actions such as depositing, withdrawing, and toggling the freeze status.
 
-### 1. `constructor(string memory _name)`
-- **Purpose**: Initializes the contract with a name and sets the counter to `0`.
-- **Parameters**: 
-  - `_name` (string): The name to be associated with the contract.
+## **Features**
+- **Deposit ETH**: Allows the owner to deposit ETH into the contract.
+- **Withdraw ETH**: Enables the owner to withdraw ETH from the contract.
+- **Freeze/Unfreeze Contract**: The owner can toggle the contract's frozen state.
+- **View Balances**: Any user can check the contract balance or their own ETH balance.
 
-### 2. `getContractName()`
-- **Purpose**: Returns the name of the contract.
-- **Visibility**: `external` (accessible from outside the contract).
-- **Returns**: The contract name (string).
+## **Contract Details**
 
-### 3. `getCount()`
-- **Purpose**: Returns the current count value.
-- **Visibility**: `external` (accessible from outside the contract).
-- **Returns**: The current count (uint).
+### **State Variables**
+1. **owner**: Address of the contract owner.
+2. **balance**: Tracks the ETH balance stored in the contract.
+3. **frozen**: Indicates if the contract is frozen.
 
-### 4. `incrementCount()`
-- **Purpose**: Increments the current counter by `100` and emits an event with the new count.
-- **Visibility**: `external` (can be called by external addresses).
-  
-## Events
+### **Events**
+1. `Deposit(uint256 amount)`: Emitted when ETH is deposited.
+2. `Withdraw(uint256 amount)`: Emitted when ETH is withdrawn.
+3. `FreezeStatusChanged(bool frozen)`: Emitted when the freeze status changes.
 
-- **`CountIncremented(uint newCount)`**: This event is emitted whenever the counter is incremented. It provides the new count value.
+### **Functions**
 
-## How to Deploy and Interact with the Contract in Remix
+#### **1. Constructor**
+Initializes the contract with the owner’s address, an initial balance, and sets the frozen state to false.
 
-### Step-by-Step Guide
+#### **2. getBalance()**
+Returns the current balance of the contract.
 
-1. **Open Remix IDE**:
-   Go to [Remix Ethereum IDE](https://remix.ethereum.org).
+#### **3. getAccountBalance()**
+Returns the caller’s ETH balance (converted to ETH).
 
-2. **Create a New File**:
-   - In the Remix file explorer, click on the "+" button to create a new Solidity file.
-   - Name the file `SmartContractManagement.sol` and paste the contract code into the file.
+#### **4. deposit(uint256 _amount)**
+Allows the owner to deposit ETH by sending the specified amount.
+- Ensures the contract is not frozen and the sent ETH matches the deposit amount.
 
-3. **Compile the Contract**:
-   - On the left-hand side of Remix, click the "Solidity Compiler" tab (the third tab, it looks like a compiler icon).
-   - Select the appropriate version (e.g., `0.8.18`).
-   - Click on "Compile SmartContractManagement.sol".
+#### **5. withdraw(uint256 _withdrawAmount)**
+Enables the owner to withdraw a specified amount of ETH.
+- Validates sufficient balance and ensures the contract is not frozen.
 
-4. **Deploy the Contract**:
-   - Once compiled, go to the "Deploy & Run Transactions" tab (the fourth tab, it looks like an Ethereum logo).
-   - In the "Environment" dropdown, you can choose either the JavaScript VM (for testing), Injected Web3 (for MetaMask), or Web3 Provider (for external nodes like Infura). If you're just testing locally in Remix, choose the JavaScript VM.
-   - In the "Contract" dropdown, select `SmartContractManagement`.
-   - Enter a name (e.g., "My Smart Contract") in the input field for the constructor parameter `_name`.
-   - Click on the "Deploy" button.
+#### **6. toggleFreeze()**
+Toggles the `frozen` state of the contract, enabling or disabling deposits and withdrawals.
 
-5. **Interact with the Deployed Contract**:
-   - After deployment, the contract will appear in the "Deployed Contracts" section.
-   - You can interact with it by expanding the deployed contract and using the provided functions.
+### **Error Handling**
+- **InsufficientBalance**: Triggered when withdrawal exceeds the available balance.
+- Require statements ensure proper validations for ownership and contract state.
 
-   ### Example Functions:
-   - **`getContractName()`**:
-     - Click on `getContractName()` to retrieve the contract's name.
-   - **`getCount()`**:
-     - Click on `getCount()` to check the current count (it should start at 0).
-   - **`incrementCount()`**:
-     - Click on `incrementCount()` to increment the count. You will see the `CountIncremented` event logged in the Remix console.
 
-6. **View Events**:
-   - After calling `incrementCount()`, you can see the `CountIncremented` event in the Remix console, which logs the new value of the counter.
+### **Deployment**
+After cloning the github, you will want to do the following to get the code running on your computer.
+
+1. Inside the project directory, in the terminal type: npm i
+2. Open two additional terminals in your VS code
+3. In the second terminal type: npx hardhat node
+4. In the third terminal, type: npx hardhat run --network localhost scripts/deploy.js
+5. Back in the first terminal, type npm run dev to launch the front-end.
+
+After this, the project will be running on your localhost. 
+Typically at http://localhost:3000/
+
+
+
+
+
+
 
 ## License
 
